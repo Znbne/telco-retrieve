@@ -185,7 +185,7 @@ Pick the embedding model with `--model`:
 | `e5` | intfloat/e5-large-v2 | 1024 | High quality |
 | `bge` | BAAI/bge-large-en-v1.5 | 1024 | Strong on technical domains |
 | `otel-109m` | OTel-Embedding-109M | 768 | Telecom fine-tuned, 109M parameters |
-| `otel-0.6b` | OTel-Embedding-0.6B | 1024 | Telecom fine-tuned, 0.6B parameters |
+| `otel-0.6b` | OTel-Embedding-0.6B | 1024 | Telecom fine-tuned, 0.6B parameters. The challenge embedder |
 
 Tip: use the same `--model` when you search and ask. Details: [CLI reference](docs/reference/cli.md), [embedding models](docs/reference/embedding.md).
 

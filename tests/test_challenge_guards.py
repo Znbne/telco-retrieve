@@ -50,6 +50,20 @@ def test_same_model_passed_by_its_hugging_face_id_matches_the_registry_key(tmp_p
         )
 
 
+def test_renamed_hub_id_is_the_same_embedder_as_the_registry_key(tmp_path, monkeypatch):
+    def otel_index(path):
+        build_index(path, sidecar="otel-0.6b")
+
+    cli_export(
+        tmp_path,
+        monkeypatch,
+        "--embedder-id",
+        "farbodtavakkoli/OTel-Embedding-600M",
+        index=otel_index,
+        allow=False,
+    )
+    assert (tmp_path / "o.csv").exists()
+
 def test_index_without_a_sidecar_falls_back_to_the_chunk_ids(tmp_path, monkeypatch):
     def no_sidecar(path):
         build_index(path, sidecar=None)

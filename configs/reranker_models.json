@@ -16,7 +16,7 @@
     },
     "otel-reranker-0.6b": {
         "model_name": "farbodtavakkoli/OTel-Reranker-0.6B",
-        "description": "Telecom-domain reranker — 0.6B params, Qwen3-based (recommended)",
+        "description": "Telecom-domain reranker — 0.6B params, Qwen3-based. The TelcoRetrieve Challenge reranker",
         "backend": "otel"
     },
     "otel-reranker-4b": {
