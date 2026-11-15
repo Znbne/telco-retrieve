@@ -1,5 +1,7 @@
 # Evaluation
 
+This page describes the general evaluation tool. In the TelcoRetrieve Challenge the questions are multiple choice or true/false only, scored by exact match, so the open-question and judge-model options below do not apply. See the [challenge guide](../challenge/README.md).
+
 ## Evaluate options
 
 ```bash
