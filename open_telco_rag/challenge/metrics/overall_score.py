@@ -4,14 +4,14 @@
 
 Prints accuracy, token efficiency, the overall score and whether the 80% minimum accuracy is met.
 Overall = 0.7 x Accuracy + 0.3 x TokenEfficiency, all three out of 100. On Zindi the weights are configured on the
-platform (provisionally 70% / 30%); this file is for participants to check a CSV before submitting.
+platform (70% / 30%); this file is for participants to check a CSV before submitting.
 """
 import sys
 
 import accuracy as A
 import token_efficiency as T
 
-WEIGHT_ACCURACY, WEIGHT_TOKEN_EFFICIENCY = 0.7, 0.3   # provisional
+WEIGHT_ACCURACY, WEIGHT_TOKEN_EFFICIENCY = 0.7, 0.3
 MIN_ACCURACY = 80                                      # percent, minimum to advance to code evaluation
 
 if __name__ == "__main__":

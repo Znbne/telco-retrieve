@@ -78,3 +78,34 @@ def test_export_cap_and_total_use_the_metric_string_and_tokenizer(tmp_path):
     assert token_efficiency.token_efficiency(str(reference), str(out)) == pytest.approx(
         100 * baseline / (baseline + sum(counts))
     )
+
+
+def _prompt_of(n_tokens: int) -> str:
+    text = "a" + " a" * (n_tokens - 1)
+    assert token_efficiency.count_tokens(text) == n_tokens
+    return text
+
+
+def test_hand_made_example_matches_the_published_formula(tmp_path):
+    from open_telco_rag.challenge.score import score_submission
+
+    assert token_efficiency.BASELINE_TOKENS_PER_QUESTION == 850
+    reference = tmp_path / "ref.csv"
+    submission = tmp_path / "sub.csv"
+    with open(reference, "w", encoding="utf-8", newline="") as ref, open(
+        submission, "w", encoding="utf-8", newline=""
+    ) as sub:
+        ref_writer, sub_writer = csv.writer(ref), csv.writer(sub)
+        ref_writer.writerow(["ID", "answer"])
+        sub_writer.writerow(["ID", "input_prompt", "answer"])
+        prompt = _prompt_of(850)
+        for i in range(100):
+            ref_writer.writerow([str(i), "A"])
+            sub_writer.writerow([str(i), prompt, "A" if i < 90 else "B"])
+    # B = 850 * 100 = 85,000 and T = 85,000, so token efficiency is 50
+    assert token_efficiency.token_efficiency(str(reference), str(submission)) == pytest.approx(50.0)
+    result = score_submission(submission, reference)
+    assert result.accuracy == pytest.approx(90.0)
+    assert result.token_efficiency == pytest.approx(50.0)
+    assert result.overall == pytest.approx(0.7 * 90 + 0.3 * 50)
+    assert result.minimum_met
