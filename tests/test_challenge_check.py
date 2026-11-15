@@ -15,8 +15,8 @@ from open_telco_rag.challenge.tokens import count_tokens
 BIG_ID = "781260748538"
 OFFICIAL_SHA256 = {
     "accuracy.py": "f3ca4ce766d5cb07711bf32c584fdc92434068cdd97946ccb3f3904f081d1abe",
-    "overall_score.py": "6c97f7d2f9ac518bdc5494debcaf3ecda2d8fe2749399eafe99b591b201ea160",
-    "token_efficiency.py": "269143e357c2f5ca1093d094278951ca434cc3bdafd99ae743b67bc1ac1558ec",
+    "overall_score.py": "0049d03a934503314853028a1ec50a320390e4fcdcf7b35642c661dfefb1541c",
+    "token_efficiency.py": "1647ae882c8dfff29779c8c3848f493364c4d6350422e9976553775b9218d218",
 }
 OFFICIAL_SCRIPT = Path(metrics.__file__).parent / "overall_score.py"
 
@@ -52,7 +52,9 @@ def files(tmp_path):
 def test_vendored_scripts_are_unmodified():
     for name, digest in OFFICIAL_SHA256.items():
         assert (
-            hashlib.sha256((Path(metrics.__file__).parent / name).read_bytes()).hexdigest()
+            hashlib.sha256(
+                (Path(metrics.__file__).parent / name).read_bytes().replace(b"\r\n", b"\n")
+            ).hexdigest()
             == digest
         )
 

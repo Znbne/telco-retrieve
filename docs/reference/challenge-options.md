@@ -4,7 +4,7 @@ These options belong to `open-telco-rag challenge export`. The [challenge guide]
 
 ## Use your own embedder
 
-Use an embedder that matches the index. Add it to `configs/embedding_models.json` (see [embedding reference](embedding.md)), ingest with `--model <key>`, then export with the same key.
+In the challenge the embedder is OTel-Embedding-0.6B; fine-tuning it is allowed, and `--embedder-path` is for such fine-tuned weights. Use an embedder that matches the index. Add it to `configs/embedding_models.json` (see [embedding reference](embedding.md)), ingest with `--model <key>`, then export with the same key.
 
 - `--embedder-path <folder>` loads a local sentence-transformers folder. `--embedder-id <id>` loads a Hugging Face model.
 - `--query-prefix` sets the prefix added to queries.
@@ -26,7 +26,7 @@ def prompt(question, passages, max_prompt_tokens):
 open-telco-rag challenge export ... --prompt-builder my_hooks:prompt
 ```
 
-The builder returns a `Prompt(messages, input_prompt, n_tokens, n_passages)`. The CSV column is exactly `input_prompt`. The generator gets exactly `messages`.
+`export` sends the prompt in one generator call per question and retries only after a failed request. The builder returns a `Prompt(messages, input_prompt, n_tokens, n_passages)`. The CSV column is exactly `input_prompt`. The generator gets exactly `messages`.
 
 ## Answer parser
 

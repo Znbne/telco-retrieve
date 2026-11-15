@@ -13,7 +13,7 @@ Available embedding models:
 | `e5` | intfloat/e5-large-v2 | 1024 | High quality — recommended for production |
 | `bge` | BAAI/bge-large-en-v1.5 | 1024 | Strong on technical domains |
 | `otel-109m` | OTel-Embedding-109M | 768 | Telecom-domain fine-tuned — 109M params |
-| `otel-0.6b` | OTel-Embedding-0.6B | 1024 | Telecom-domain fine-tuned — 0.6B params |
+| `otel-0.6b` | OTel-Embedding-0.6B (hub repo `OTel-Embedding-600M`) | 1024 | Telecom-domain fine-tuned — 0.6B params. The challenge embedder |
 
 ## More embedding models and prefixes
 
@@ -54,7 +54,7 @@ Tips:
 - `ingest` prints no token counts or cost for OpenRouter embedders (the embedder keeps the totals and `evaluate` reports
   them); look at your OpenRouter account to see what a run cost.
 
-**Tip: choose `otel-0.6b` or `otel-109m`.** `otel-300m` does not load with sentence-transformers 5.5.0 and 5.7.0.
+**Tip: for the TelcoRetrieve Challenge use `otel-0.6b`.** `otel-109m` is also available. OTel-Embedding-300M is not in the registry: it is not used in the challenge and does not load with sentence-transformers.
 
 **Precision on a GPU.** A registry entry may carry `"dtype": "float16" | "bfloat16" | "float32"`. On a GPU it sets both the
 dtype the model is loaded in and the autocast dtype; `float32` runs without autocast. Without a `dtype`, nothing changed:
@@ -85,7 +85,7 @@ API returns it.
 | `ms-marco-minilm` | cross-encoder/ms-marco-MiniLM-L-6-v2 | Fast, general-purpose |
 | `ms-marco-large` | cross-encoder/ms-marco-MiniLM-L-12-v2 | Larger, more accurate |
 | `bge-reranker` | BAAI/bge-reranker-large | Strong on technical domains |
-| `otel-reranker-0.6b` | OTel-Reranker-0.6B | Telecom-domain fine-tuned (recommended) |
+| `otel-reranker-0.6b` | OTel-Reranker-0.6B | Telecom-domain fine-tuned. The challenge reranker |
 | `otel-reranker-4b` | OTel-Reranker-4B | Higher accuracy, requires GPU |
 
 The `otel-*` rerankers truncate the query and each document to 512 / 1024

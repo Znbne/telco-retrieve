@@ -4,7 +4,11 @@ In the TelcoRetrieve Challenge you answer telecom questions with a retrieval pip
  
 Submit your file on [Zindi](https://zindi.world/competitions/telcoretrieve-challenge-unlocking-telco-knowledge).
  
+The challenge models are fixed: the generator is `google/gemma-3n-E4B-it`, the embedder is OTel-Embedding-0.6B (`otel-0.6b`, hub repo `OTel-Embedding-600M`; fine-tuning allowed) and the reranker is OTel-Reranker-0.6B (`otel-reranker-0.6b`). Other models in the registry are for general use and are not used in the challenge.
+
 Score = 0.7 × accuracy + 0.3 × token efficiency, where token efficiency = 100 × B / (B + T). B is 850 tokens per question and T is the total prompt tokens. Minimum accuracy is 80%. Every `input_prompt` must be at most 4,096 tokens.
+
+The questions are multiple choice or true/false. Answers are scored by exact match, and an empty or invalid answer counts as wrong. B is 850 times the number of questions, and T is the `cl100k_base` token count of `input_prompt` summed over all questions. The minimum accuracy of 80% applies to the whole set. There are 100 public and 200 private questions. Each question may use one generator call, and `input_prompt` is that one prompt.
  
 ## 1. Install
  
@@ -90,6 +94,10 @@ open-telco-rag ingest 3gpp --data DATA --model otel-0.6b --distance-metric cosin
  
 `ingest` uses `minilm` and `l2` by default. The published index uses cosine distance, so `--distance-metric cosine` gives your index the same behaviour. `export` works with any metric.
  
+## Validation questions
+
+No labelled question set is released with the challenge. To check your pipeline, build your own validation questions from the Rel-19 corpus, using only the allowed models, save them as JSON and run `open-telco-rag evaluate --questions-file <file>`. See the [evaluation reference](../reference/evaluation.md).
+
 ## FAQ
  
 **How do I resume a stopped export?** Run the same command with `--resume`. It continues from `<out>.partial`.

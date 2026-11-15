@@ -10,9 +10,13 @@ REGISTRY = Path(__file__).resolve().parents[2] / "configs" / "embedding_models.j
 PARENT_SAMPLE = 200
 
 
+# the hub renamed OTel-Embedding-0.6B to OTel-Embedding-600M; both names are the same model
+HUB_ALIASES = {"farbodtavakkoli/OTel-Embedding-0.6B": "farbodtavakkoli/OTel-Embedding-600M"}
+
+
 def _normal(name: str) -> str:
     candidate = os.path.abspath(name)
-    return candidate if os.path.exists(candidate) else name
+    return candidate if os.path.exists(candidate) else HUB_ALIASES.get(name, name)
 
 
 def _registry_name(key: str) -> str | None:

@@ -57,6 +57,8 @@ def make_collection(db_path, name: str, rows: list[dict], embedder: FakeEmbedder
                  "updated_at": datetime.now().astimezone().isoformat(timespec="seconds")}
         index_settings_file(db_path, name).write_text(
             json.dumps({"version": 1, "latest": entry, "history": [entry]}), encoding="utf8")
+    if fts._conn is not None:
+        fts._conn.close()   # an open SQLite file cannot be deleted on Windows
     return store
 
 

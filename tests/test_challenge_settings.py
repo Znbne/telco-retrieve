@@ -110,7 +110,7 @@ def test_the_default_components_are_the_competition_ones_and_load_from_these_ids
     rerankers = json.loads((root / "reranker_models.json").read_text(encoding="utf-8"))
     settings = resolve_settings(argparse.Namespace())
     competition_only(settings)
-    assert embedders[settings["model"]]["model_name"] == "farbodtavakkoli/OTel-Embedding-0.6B"
+    assert embedders[settings["model"]]["model_name"] == "farbodtavakkoli/OTel-Embedding-600M"
     assert rerankers[settings["reranker"]]["model_name"] == "farbodtavakkoli/OTel-Reranker-0.6B"
     assert rerankers[settings["reranker"]]["backend"] == "otel"
 
