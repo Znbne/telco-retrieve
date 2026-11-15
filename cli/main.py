@@ -269,9 +269,9 @@ def main(argv: list[str] | None = None) -> None:
                              "Use this when your collection has a custom name, "
                              "e.g. 3gpp_r19_marker_bge")
     p_eval.add_argument("--questions-file", default=None,
-                        help="Path to a custom QnA JSON file. "
-                             "Must follow the same format as configs/eval_questions/{corpus}.json. "
-                             "If omitted, loads from configs/eval_questions/{corpus}.json")
+                        help="Path to your own validation questions (JSON). "
+                             "Must follow the format of configs/eval_questions/{corpus}.json. "
+                             "No question file is shipped, so this is needed unless you made that folder")
     p_eval.add_argument("--top-k",          type=int, default=5,  help="Chunks to retrieve per question")
     p_eval.add_argument("--search-method", choices=["dense", "bm25", "hybrid"], default="dense",
                         help="Retrieval method (default: dense), same choices as search/ask")
@@ -844,8 +844,22 @@ def _run_ask(args) -> None:
     print(f"Chunks used: {answer['chunks_used']}")
 
 
+def _explain_missing_questions(evaluate_corpus):
+    """Turn the missing-question-file error into a message instead of a traceback."""
+    def run(*args, **kwargs):
+        try:
+            return evaluate_corpus(*args, **kwargs)
+        except FileNotFoundError as exc:
+            if "no labelled question set" not in str(exc):
+                raise
+            print(f"[ERROR] {exc}")
+            sys.exit(1)
+    return run
+
+
 def _run_evaluate(args) -> None:
     from open_telco_rag.evaluation.evaluate import evaluate_corpus
+    evaluate_corpus = _explain_missing_questions(evaluate_corpus)
     from open_telco_rag.evaluation.questions import SUPPORTED_CORPORA, load_questions, EvalQuestion
     from open_telco_rag.evaluation._claude import make_llm_call
     from open_telco_rag.core.retrieval import resolve_budget_args

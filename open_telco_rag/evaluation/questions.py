@@ -17,6 +17,15 @@ _QUESTIONS_DIR = Path(__file__).parent.parent.parent / "configs" / "eval_questio
 SUPPORTED_CORPORA = ["oran", "3gpp", "camara", "tmforum", "gsma", "itu", "etsi"]
 
 
+def no_questions_message(path: Path) -> str:
+    return (
+        f"No question file at {path}. This repository has no labelled question set and the "
+        "challenge releases none. Build your own validation questions from the Rel-19 corpus, "
+        "using only the allowed models (Gemma 3n E4B-it, OTel-Embedding-0.6B, OTel-Reranker-0.6B), "
+        "save them as JSON and pass the file with --questions-file."
+    )
+
+
 @dataclass
 class EvalQuestion:
     """One evaluation question with optional ground truth."""
@@ -89,10 +98,7 @@ def load_questions(
     path = qdir / f"{corpus}.json"
 
     if not path.exists():
-        raise FileNotFoundError(
-            f"Questions file not found: {path}\n"
-            f"Expected at: configs/eval_questions/{corpus}.json"
-        )
+        raise FileNotFoundError(no_questions_message(path))
 
     data = json.loads(path.read_text(encoding="utf-8"))
     items = data.get("questions", [])

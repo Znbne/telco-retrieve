@@ -54,3 +54,26 @@ def test_from_dict_defaults_difficulty_to_none_for_files_without_it():
     # True today for every file under configs/eval_questions/.
     q = EvalQuestion.from_dict({"question": "What does 25.401 define?", "corpus": "3gpp"})
     assert q.difficulty is None
+
+
+def test_missing_question_file_explains_there_is_no_labelled_set(tmp_path):
+    import pytest
+
+    from open_telco_rag.evaluation.questions import load_questions
+
+    with pytest.raises(FileNotFoundError, match="no labelled question set") as error:
+        load_questions("3gpp", tmp_path)
+    assert "--questions-file" in str(error.value)
+
+
+def test_evaluate_without_questions_exits_with_the_message_not_a_traceback(tmp_path, capsys):
+    import pytest
+
+    import cli.main as cli_main
+    from open_telco_rag.evaluation.questions import load_questions
+
+    run = cli_main._explain_missing_questions(lambda **kwargs: load_questions("3gpp", tmp_path))
+    with pytest.raises(SystemExit) as stop:
+        run()
+    assert stop.value.code == 1
+    assert "no labelled question set" in capsys.readouterr().out

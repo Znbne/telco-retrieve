@@ -8,7 +8,7 @@ open-telco-rag evaluate 3gpp \
   --model bge \
   --db-path chroma_db \
   --collection 3gpp_r19_marker_bge \
-  --questions-file configs/eval_questions/3gpp_r19_qna.json \
+  --questions-file my_questions.json \
   --rag-generator openrouter \
   --rag-generator-model meta-llama/llama-3.3-70b-instruct \
   --generator openrouter \
@@ -33,7 +33,7 @@ open-telco-rag evaluate 3gpp \
 | `--model` | `minilm` | Embedding model key. |
 | `--db-path` | `chroma_db` | ChromaDB storage path. |
 | `--collection` | `corpus_model` | Override collection name (e.g., `3gpp_r19_marker_bge`). |
-| `--questions-file` | `configs/eval_questions/{corpus}.json` | Path to a custom QnA JSON file — supports mixed `mc`/`tf`/`open`/`fill_blank` question sets in one run, see "Per-format results" below. |
+| `--questions-file` | `configs/eval_questions/{corpus}.json` | Path to your own validation questions (JSON). No question file is shipped, so pass this or create that folder. Supports mixed `mc`/`tf`/`open`/`fill_blank` question sets in one run, see "Per-format results" below. |
 | `--top-k` | `5` | Chunks to retrieve per question. |
 | `--threshold` | `0.5` | Similarity threshold for the `coverage_ratio` metric (fraction of retrieved chunks meeting this similarity floor). |
 | `--output` | `results` | Directory to save result JSON files. |
