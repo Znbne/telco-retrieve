@@ -52,7 +52,9 @@ def files(tmp_path):
 def test_vendored_scripts_are_unmodified():
     for name, digest in OFFICIAL_SHA256.items():
         assert (
-            hashlib.sha256((Path(metrics.__file__).parent / name).read_bytes()).hexdigest()
+            hashlib.sha256(
+                (Path(metrics.__file__).parent / name).read_bytes().replace(b"\r\n", b"\n")
+            ).hexdigest()
             == digest
         )
 
