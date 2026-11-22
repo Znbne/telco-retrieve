@@ -13,6 +13,10 @@ Part of the [GSMA Open Telco AI](https://www.open-telco.ai/).
 
 > **TelcoRetrieve Challenge: open 13 Nov 2026 – 13 Jan 2027.** Optimise this pipeline on 3GPP Rel-19 and compete for €25,000 in prizes. [Challenge guide](docs/challenge/README.md) · [Join on Zindi](https://zindi.world/competitions/telcoretrieve-challenge-unlocking-telco-knowledge) · [Challenge slides](https://github.com/Znbne/telco-retrieve/blob/main/TelcoRetrieve%20Challenge%20Slides.pdf)
 
+Organiser updates and clarifications (Zindi): [discussion thread](https://zindi.world/competitions/telcoretrieve-challenge-unlocking-telco-knowledge/discussions/36156). Where it differs from older wording, the thread takes precedence.
+
+**Submissions and timeline.** Phase 1 allows 2 submissions per day and 40 in total. Phase 2 (private test set) allows 2 per day and 8 in total. The challenge opens on 13 Nov 2026 with 100 public questions, enrolments close on 7 Jan 2027, 200 additional private questions are released on 8 Jan 2027 and the challenge closes on 13 Jan 2027. The top 10 on the private leaderboard go to a code review (15-31 Jan 2027), where Zindi reruns their pipelines on AMD hardware on a hidden evaluation set, scored on accuracy and token efficiency only (latency and cost are not scored). Final results are published on 31 Jan 2027. The rules are in the [challenge guide](docs/challenge/README.md#rules-and-clarifications).
+
 <p align="center">
   <img src="docs/graphics/telcoretrieve-pipeline.png" alt="TelcoRetrieve pipeline: documents are chunked and embedded into an index, then retrieved, reranked and passed to the generator to produce an answer with sources" width="700">
 </p>

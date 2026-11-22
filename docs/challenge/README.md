@@ -3,6 +3,8 @@
 In the TelcoRetrieve Challenge you answer telecom questions with a retrieval pipeline and a small language model. The `open-telco-rag challenge` commands turn a question file into a submission file, check it and score it.
  
 Submit your file on [Zindi](https://zindi.world/competitions/telcoretrieve-challenge-unlocking-telco-knowledge).
+
+Organiser updates and clarifications (Zindi): [discussion thread](https://zindi.world/competitions/telcoretrieve-challenge-unlocking-telco-knowledge/discussions/36156). Where it differs from older wording, the thread takes precedence.
  
 The challenge models are fixed: the generator is `google/gemma-3n-E4B-it`, the embedder is OTel-Embedding-0.6B (`otel-0.6b`, hub repo `OTel-Embedding-600M`; fine-tuning allowed) and the reranker is OTel-Reranker-0.6B (`otel-reranker-0.6b`). Other models in the registry are for general use and are not used in the challenge.
 
@@ -10,6 +12,16 @@ Score = 0.7 × accuracy + 0.3 × token efficiency, where token efficiency = 100 
 
 The questions are multiple choice or true/false. Answers are scored by exact match, and an empty or invalid answer counts as wrong. B is 850 times the number of questions, and T is the `cl100k_base` token count of `input_prompt` summed over all questions. The minimum accuracy of 80% applies to the whole set. There are 100 public and 200 private questions. Each question may use one generator call, and `input_prompt` is that one prompt.
  
+## Submissions and timeline
+
+- Submission limits: Phase 1 is 2 submissions per day and 40 in total. Phase 2 (private test set) is 2 per day and 8 in total.
+- 13 Nov 2026: the challenge opens with 100 public questions.
+- 7 Jan 2027: enrolments close.
+- 8 Jan 2027: 200 additional private questions are released.
+- 13 Jan 2027: the challenge closes.
+- 15-31 Jan 2027: the top 10 on the private leaderboard go to a code review. Zindi reruns their pipelines on AMD hardware on a hidden evaluation set, scored on accuracy and token efficiency only. Latency and cost are not scored.
+- 31 Jan 2027: final results.
+
 ## Rules and clarifications
 
 - **Models.** The challenge models are the embedder OTel-Embedding-0.6B (600M, also called `otel-0.6b`), the reranker OTel-Reranker-0.6B and the generator Gemma 3n E4B-it. You do not have to use all three. For example, Gemma 3n E4B-it with the OTel reranker and BM25, without the embedder, is compliant. Non-model components such as BM25 and heuristics are allowed. Additional learned models are not. The 300M embedder is not used. The pre-built fixed-grid indexes, including `text_baseline/otel-0.6b`, are compliant and need no re-embedding.
