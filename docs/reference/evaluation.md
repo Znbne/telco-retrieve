@@ -72,6 +72,8 @@ open-telco-rag evaluate 3gpp \
 
 ### How scoring works, per question type
 
+LLM-judge and open-ended scoring belong to the general tool and do not apply to the challenge, which uses multiple choice and true/false questions scored by exact match.
+
 Every question goes through the same retrieve → (optional rerank) →
 generate pipeline; scoring then branches by `answer_type`:
 
@@ -103,6 +105,8 @@ figures for `open`, rather than one flat number across everything. Also
 saved in the leaderboard row (`by_format` column) and the JSON output file.
 
 ### Using your own LLM endpoint
+
+LLM-judge and open-ended scoring belong to the general tool and do not apply to the challenge, which uses multiple choice and true/false questions scored by exact match.
 
 Any OpenAI-compatible server (vLLM, Ollama, a hosted gateway, ...) can serve
 the LLM stages. Point the CLI at it with the existing options; nothing is

@@ -3,6 +3,8 @@
 In the TelcoRetrieve Challenge you answer telecom questions with a retrieval pipeline and a small language model. The `open-telco-rag challenge` commands turn a question file into a submission file, check it and score it.
  
 Submit your file on [Zindi](https://zindi.world/competitions/telcoretrieve-challenge-unlocking-telco-knowledge).
+
+Organiser updates and clarifications (Zindi): [discussion thread](https://zindi.world/competitions/telcoretrieve-challenge-unlocking-telco-knowledge/discussions/36156). Where it differs from older wording, the thread takes precedence.
  
 The challenge models are fixed: the generator is `google/gemma-3n-E4B-it`, the embedder is OTel-Embedding-0.6B (`otel-0.6b`, hub repo `OTel-Embedding-600M`; fine-tuning allowed) and the reranker is OTel-Reranker-0.6B (`otel-reranker-0.6b`). Other models in the registry are for general use and are not used in the challenge.
 
@@ -10,6 +12,28 @@ Score = 0.7 × accuracy + 0.3 × token efficiency, where token efficiency = 100 
 
 The questions are multiple choice or true/false. Answers are scored by exact match, and an empty or invalid answer counts as wrong. B is 850 times the number of questions, and T is the `cl100k_base` token count of `input_prompt` summed over all questions. The minimum accuracy of 80% applies to the whole set. There are 100 public and 200 private questions. Each question may use one generator call, and `input_prompt` is that one prompt.
  
+## Submissions and timeline
+
+- Submission limits: Phase 1 is 2 submissions per day and 40 in total. Phase 2 (private test set) is 2 per day and 8 in total.
+- 13 Nov 2026: the challenge opens with 100 public questions.
+- 7 Jan 2027: enrolments close.
+- 8 Jan 2027: 200 additional private questions are released.
+- 13 Jan 2027: the challenge closes.
+- 15-31 Jan 2027: the top 10 on the private leaderboard go to a code review. Zindi reruns their pipelines on AMD hardware on a hidden evaluation set, scored on accuracy and token efficiency only. Latency and cost are not scored.
+- 31 Jan 2027: final results.
+
+## Rules and clarifications
+
+- **Models.** The challenge models are the embedder OTel-Embedding-0.6B (600M, also called `otel-0.6b`), the reranker OTel-Reranker-0.6B and the generator Gemma 3n E4B-it. You do not have to use all three. For example, Gemma 3n E4B-it with the OTel reranker and BM25, without the embedder, is compliant. Non-model components such as BM25 and heuristics are allowed. Additional learned models are not. The 300M embedder is not used. The pre-built fixed-grid indexes, including `text_baseline/otel-0.6b`, are compliant and need no re-embedding.
+- **Fine-tuning.** Fine-tuning is allowed for the generator and/or the embedder, with the same base models, for example an adapter for Gemma 3n E4B-it or a fine-tuned OTel-Embedding-0.6B. OTel-Reranker-0.6B must be used as provided and cannot be fine-tuned. Finalists hand over their fine-tuned weights together with their code in the code review. The reranker used in the benchmark is the OTel one: an OTel reranker and a generic one were compared, and the OTel one performed better and fits the challenge.
+- **Training data.** Use only the data provided for the challenge: the GSMA collection on Hugging Face, including the 3GPP documents. Allowed: synthetic data and question-answer pairs generated from the provided documents; open models, including open-weight models run locally, even if they are not one of the three pipeline models; scripts and open-source tools; your own methods for PDF conversion, image and table extraction, hybrid RAG or other pipeline improvements. Tools used only to generate training data do not need to be part of the submitted pipeline, but the generation pipeline may be requested in the code review. The code review uses unseen questions, so training too narrowly on one question style may hurt generalisation.
+- **Indexes.** Only the provided Rel-19 documents may be used to build or modify indexes. The pre-built indexes and chunks (`GSMA/telco-retrieve-chunks`) are optional; `telecom-standards-corpus` has the raw documents.
+- **AI coding assistants.** They may be used during development only. The submitted pipeline must use only open-source tools and the permitted models, call no paid service or external API, and be fully reproducible from the submitted code.
+- **Question formats.** Multiple choice and true/false only, scored by exact match. An abstention counts as wrong. There is no judge model and no citation scoring. Choosing the answer from the first-token (next-token) label probabilities of Gemma 3n E4B-it is allowed if the model is Gemma 3n E4B-it and the prompt is exactly the one reported in `input_prompt`.
+- **`input_prompt`.** It must contain all text sent to Gemma 3n E4B-it to produce the submitted answer: the system prompt, any retrieved context, and the question including its answer options as presented to the model. It must work independently: pasted into Gemma 3n E4B-it, it must be enough to produce the submitted answer. The pipeline is limited to one LLM call per question. Omitting text that was actually sent is not permitted. Non-compliant submissions may be disqualified regardless of leaderboard position, and leaderboard positions are provisional.
+- **Validation data.** See [Validation questions](#validation-questions).
+- **Code sharing.** A private GitHub repository without collaborators is allowed as a backup of your own code. Sharing code or repository access with anyone outside your team is not allowed. Installing the official TelcoRetrieve pipeline from GitHub is allowed and does not count as a custom package.
+
 ## 1. Install
  
 ```bash
@@ -96,7 +120,7 @@ open-telco-rag ingest 3gpp --data DATA --model otel-0.6b --distance-metric cosin
  
 ## Validation questions
 
-No labelled question set is released with the challenge. To check your pipeline, build your own validation questions from the Rel-19 corpus, using only the allowed models, save them as JSON and run `open-telco-rag evaluate --questions-file <file>`. See the [evaluation reference](../reference/evaluation.md).
+The `GSMA/telco-retrieve-QnA` dataset is not part of the challenge. It was removed from Hugging Face and will not be published, so there is no labelled QnA. Build your own validation questions from the provided Rel-19 documents, using only the permitted models and data. To check your pipeline, save them as JSON and run `open-telco-rag evaluate --questions-file <file>`. See the [evaluation reference](../reference/evaluation.md).
 
 ## FAQ
  

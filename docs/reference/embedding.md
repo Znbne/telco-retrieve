@@ -13,7 +13,7 @@ Available embedding models:
 | `e5` | intfloat/e5-large-v2 | 1024 | High quality — recommended for production |
 | `bge` | BAAI/bge-large-en-v1.5 | 1024 | Strong on technical domains |
 | `otel-109m` | OTel-Embedding-109M | 768 | Telecom-domain fine-tuned — 109M params |
-| `otel-0.6b` | OTel-Embedding-0.6B (hub repo `OTel-Embedding-600M`) | 1024 | Telecom-domain fine-tuned — 0.6B params. The challenge embedder |
+| `otel-0.6b` | OTel-Embedding-0.6B (600M, hub repo `OTel-Embedding-600M`) | 1024 | Telecom-domain fine-tuned — 0.6B params. The challenge embedder |
 
 ## More embedding models and prefixes
 
